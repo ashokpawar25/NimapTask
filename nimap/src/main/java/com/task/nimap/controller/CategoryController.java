@@ -19,10 +19,9 @@ public class CategoryController {
     CategoryService categoryService;
 
     @GetMapping
-    ResponseEntity<List<Category>> getAllCategories(@RequestParam(name = "page", defaultValue = "0", required = false)int page)
-    {
+    ResponseEntity<List<Category>> getAllCategories(@RequestParam(name = "page", defaultValue = "0", required = false) int page) {
         final int DEFAULT_PAGE_SIZE = 2;
-        return ResponseEntity.ok(categoryService.findAllCategories(page,DEFAULT_PAGE_SIZE));
+        return ResponseEntity.ok(categoryService.findAllCategories(page, DEFAULT_PAGE_SIZE));
     }
 
     @PostMapping
@@ -36,8 +35,14 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Category> updateCategory(@PathVariable Long id,@RequestBody String newCategoryName) throws CategoryAlreadyExistsException, CategoryNotFoundException {
-        return ResponseEntity.ok(categoryService.updateCategory(id,newCategoryName));
+    ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody String newCategoryName) throws CategoryAlreadyExistsException, CategoryNotFoundException {
+        return ResponseEntity.ok(categoryService.updateCategory(id, newCategoryName));
+    }
+
+    @DeleteMapping("{id}")
+    ResponseEntity<String> deleteCategory(@PathVariable Long id) throws CategoryNotFoundException {
+        categoryService.deleteCategory(id);
+        return ResponseEntity.ok("Category with id:" + id + " is deleted successfully");
     }
 
     @ExceptionHandler(CategoryAlreadyExistsException.class)

@@ -45,4 +45,9 @@ public class CategoryService {
         category.setName(newCategoryName);
         return categoryRepository.save(category);
     }
+
+    public void deleteCategory(Long id) throws CategoryNotFoundException {
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException("Category with id:" + id + " is not present"));
+        categoryRepository.delete(category);
+    }
 }

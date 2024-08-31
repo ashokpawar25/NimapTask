@@ -1,5 +1,6 @@
 package com.task.nimap.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
@@ -11,6 +12,7 @@ public class Category {
     private Long id;
     private String name;
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Product> products;
 
     public Category() {

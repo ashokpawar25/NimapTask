@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
@@ -19,13 +21,19 @@ public class ProductController {
     @Autowired
     ProductService productService;
 
+    @GetMapping
+    ResponseEntity<List<Product>> getAllProducts(@RequestParam(name = "page", defaultValue = "0", required = false) int page) {
+        final int DEFAULT_PAGE_SIZE = 2;
+        return ResponseEntity.ok(productService.getAllProducts(page,DEFAULT_PAGE_SIZE));
+    }
+
     @PostMapping
     ResponseEntity<ProductResponseDto> createProduct(@RequestBody ProductRequestDto requestDto) throws ProductAlreadyExistsException, CategoryNotFoundException {
         return ResponseEntity.ok(productService.saveProduct(requestDto));
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<ProductResponseDto> getProductById(@PathVariable Long id) throws ProductNotFoundException {
+    ResponseEntity<Product> getProductById(@PathVariable Long id) throws ProductNotFoundException {
         return ResponseEntity.ok(productService.findProductById(id));
     }
 

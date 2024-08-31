@@ -10,7 +10,10 @@ import com.task.nimap.service.exception.CategoryNotFoundException;
 import com.task.nimap.service.exception.ProductAlreadyExistsException;
 import com.task.nimap.service.exception.ProductNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ProductService {
@@ -20,6 +23,11 @@ public class ProductService {
 
     @Autowired
     CategoryRepository categoryRepository;
+
+    public List<Product> getAllProducts(int page, int DEFAULT_PAGE_SIZE) {
+        PageRequest pageRequest = PageRequest.of(page, DEFAULT_PAGE_SIZE);
+        return productRepository.findAll(pageRequest).getContent();
+    }
 
     public ProductResponseDto saveProduct(ProductRequestDto requestDto) throws ProductAlreadyExistsException, CategoryNotFoundException {
         Product existingProduct = productRepository.findByName(requestDto.getName());
@@ -33,8 +41,8 @@ public class ProductService {
         return new ProductResponseDto(savedProduct.getId(), savedProduct.getName(), savedProduct.getDescription(), savedProduct.getPrice(), savedProduct.getCategory().getId());
     }
 
-    public ProductResponseDto findProductById(Long id) throws ProductNotFoundException {
-        Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product with id:" + id + " is not present"));
-        return new ProductResponseDto(product.getId(),product.getName(),product.getDescription(),product.getPrice(),product.getCategory().getId());
+    public Product findProductById(Long id) throws ProductNotFoundException {
+        return productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product with id:" + id + " is not present"));
     }
+
 }

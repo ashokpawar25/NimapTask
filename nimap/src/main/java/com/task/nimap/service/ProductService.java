@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -45,4 +46,22 @@ public class ProductService {
         return productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product with id:" + id + " is not present"));
     }
 
+    public Product updateProduct(Long id, ProductRequestDto requestDto) throws ProductAlreadyExistsException, ProductNotFoundException, CategoryNotFoundException {
+        Product existingProduct = productRepository.findByName(requestDto.getName());
+        if(existingProduct != null)
+            throw new ProductAlreadyExistsException("Product with name " + requestDto.getName() + " is already present");
+
+        Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product with id:" + id + " is not present"));
+        Category category = categoryRepository.findById(requestDto.getCategoryId()).orElseThrow(()-> new CategoryNotFoundException("Category with id:"+id+" is not present"));
+        product.setName(requestDto.getName());
+        product.setCategory(category);
+        product.setDescription(requestDto.getDescription());
+        product.setPrice(requestDto.getPrice());
+        return productRepository.save(product);
+    }
+
+    public void deleteProduct(Long id) throws ProductNotFoundException {
+        Product existingProduct = productRepository.findById(id).orElseThrow(()-> new ProductNotFoundException("Product with id:" + id + " is not present") );
+        productRepository.delete(existingProduct);
+    }
 }

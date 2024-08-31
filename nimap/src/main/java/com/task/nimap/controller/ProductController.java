@@ -24,7 +24,7 @@ public class ProductController {
     @GetMapping
     ResponseEntity<List<Product>> getAllProducts(@RequestParam(name = "page", defaultValue = "0", required = false) int page) {
         final int DEFAULT_PAGE_SIZE = 2;
-        return ResponseEntity.ok(productService.getAllProducts(page,DEFAULT_PAGE_SIZE));
+        return ResponseEntity.ok(productService.getAllProducts(page, DEFAULT_PAGE_SIZE));
     }
 
     @PostMapping
@@ -35,6 +35,17 @@ public class ProductController {
     @GetMapping("/{id}")
     ResponseEntity<Product> getProductById(@PathVariable Long id) throws ProductNotFoundException {
         return ResponseEntity.ok(productService.findProductById(id));
+    }
+
+    @PutMapping("/{id}")
+    ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody ProductRequestDto requestDto) throws ProductAlreadyExistsException, CategoryNotFoundException, ProductNotFoundException {
+        return ResponseEntity.ok(productService.updateProduct(id, requestDto));
+    }
+
+    @DeleteMapping("/{id}")
+    ResponseEntity<String> deleteProduct(@PathVariable Long id) throws ProductNotFoundException {
+        productService.deleteProduct(id);
+        return ResponseEntity.ok("Product with id:"+id+" is deleted successfully");
     }
 
     @ExceptionHandler(ProductAlreadyExistsException.class)

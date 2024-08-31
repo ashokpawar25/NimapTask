@@ -1,6 +1,6 @@
 package com.task.nimap.service;
 
-import com.task.nimap.controller.exception.CategoryAlreadyExistsException;
+import com.task.nimap.service.exception.CategoryAlreadyExistsException;
 import com.task.nimap.dao.CategoryRepository;
 import com.task.nimap.entity.Category;
 import com.task.nimap.service.exception.CategoryNotFoundException;
@@ -18,7 +18,6 @@ public class CategoryService {
     CategoryRepository categoryRepository;
 
     public Category save(Category category) throws CategoryAlreadyExistsException {
-
         Category existingCategory = categoryRepository.findByName(category.getName());
         if (existingCategory != null) {
             throw new CategoryAlreadyExistsException("Category with " + category.getName() + " name is already present");

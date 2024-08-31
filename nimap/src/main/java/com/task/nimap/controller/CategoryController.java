@@ -35,6 +35,11 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.findCategoryById(id));
     }
 
+    @PutMapping("/{id}")
+    ResponseEntity<Category> updateCategory(@PathVariable Long id,@RequestBody String newCategoryName) throws CategoryAlreadyExistsException, CategoryNotFoundException {
+        return ResponseEntity.ok(categoryService.updateCategory(id,newCategoryName));
+    }
+
     @ExceptionHandler(CategoryAlreadyExistsException.class)
     public ResponseEntity<String> handleCategoryAlreadyExistsException(CategoryAlreadyExistsException exception) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());

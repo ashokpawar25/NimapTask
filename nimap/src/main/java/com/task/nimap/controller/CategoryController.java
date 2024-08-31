@@ -9,12 +9,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/categories")
 public class CategoryController {
 
     @Autowired
     CategoryService categoryService;
+
+    @GetMapping
+    ResponseEntity<List<Category>> getAllCategories(@RequestParam(name = "page", defaultValue = "0", required = false)int page)
+    {
+        final int DEFAULT_PAGE_SIZE = 2;
+        return ResponseEntity.ok(categoryService.findAllCategories(page,DEFAULT_PAGE_SIZE));
+    }
 
     @PostMapping
     ResponseEntity<Category> createCategory(@RequestBody Category category) throws CategoryAlreadyExistsException {

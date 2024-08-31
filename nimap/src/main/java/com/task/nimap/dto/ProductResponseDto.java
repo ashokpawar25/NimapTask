@@ -6,13 +6,15 @@ public class ProductResponseDto {
     private String description;
     private double price;
     private Long categoryId;
+    private String categoryName;
 
-    public ProductResponseDto(Long id, String name, String description, double price, Long categoryId) {
+    public ProductResponseDto(Long id, String name, String description, double price, Long categoryId, String categoryName) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.categoryId = categoryId;
+        this.categoryName = categoryName;
     }
 
     public void setId(Long id) {
@@ -53,5 +55,13 @@ public class ProductResponseDto {
 
     public Long getCategoryId() {
         return categoryId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

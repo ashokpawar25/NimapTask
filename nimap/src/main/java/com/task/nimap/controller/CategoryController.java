@@ -1,8 +1,8 @@
 package com.task.nimap.controller;
 
-import com.task.nimap.service.exception.CategoryAlreadyExistsException;
 import com.task.nimap.entity.Category;
 import com.task.nimap.service.CategoryService;
+import com.task.nimap.service.exception.CategoryAlreadyExistsException;
 import com.task.nimap.service.exception.CategoryNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

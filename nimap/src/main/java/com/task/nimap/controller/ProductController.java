@@ -33,7 +33,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<Product> getProductById(@PathVariable Long id) throws ProductNotFoundException {
+    ResponseEntity<ProductResponseDto> getProductById(@PathVariable Long id) throws ProductNotFoundException {
         return ResponseEntity.ok(productService.findProductById(id));
     }
 
@@ -45,7 +45,7 @@ public class ProductController {
     @DeleteMapping("/{id}")
     ResponseEntity<String> deleteProduct(@PathVariable Long id) throws ProductNotFoundException {
         productService.deleteProduct(id);
-        return ResponseEntity.ok("Product with id:"+id+" is deleted successfully");
+        return ResponseEntity.ok("Product with id:" + id + " is deleted successfully");
     }
 
     @ExceptionHandler(ProductAlreadyExistsException.class)

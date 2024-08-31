@@ -14,7 +14,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -39,20 +38,21 @@ public class ProductService {
 
         Product product = new Product(requestDto.getName(), requestDto.getDescription(), requestDto.getPrice(), category);
         Product savedProduct = productRepository.save(product);
-        return new ProductResponseDto(savedProduct.getId(), savedProduct.getName(), savedProduct.getDescription(), savedProduct.getPrice(), savedProduct.getCategory().getId());
+        return new ProductResponseDto(savedProduct.getId(), savedProduct.getName(), savedProduct.getDescription(), savedProduct.getPrice(), savedProduct.getCategory().getId(), savedProduct.getCategory().getName());
     }
 
-    public Product findProductById(Long id) throws ProductNotFoundException {
-        return productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product with id:" + id + " is not present"));
+    public ProductResponseDto findProductById(Long id) throws ProductNotFoundException {
+        Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product with id:" + id + " is not present"));
+        return new ProductResponseDto(product.getId(), product.getName(), product.getDescription(), product.getPrice(), product.getCategory().getId(), product.getCategory().getName());
     }
 
     public Product updateProduct(Long id, ProductRequestDto requestDto) throws ProductAlreadyExistsException, ProductNotFoundException, CategoryNotFoundException {
         Product existingProduct = productRepository.findByName(requestDto.getName());
-        if(existingProduct != null)
+        if (existingProduct != null)
             throw new ProductAlreadyExistsException("Product with name " + requestDto.getName() + " is already present");
 
         Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product with id:" + id + " is not present"));
-        Category category = categoryRepository.findById(requestDto.getCategoryId()).orElseThrow(()-> new CategoryNotFoundException("Category with id:"+id+" is not present"));
+        Category category = categoryRepository.findById(requestDto.getCategoryId()).orElseThrow(() -> new CategoryNotFoundException("Category with id:" + id + " is not present"));
         product.setName(requestDto.getName());
         product.setCategory(category);
         product.setDescription(requestDto.getDescription());
@@ -61,7 +61,7 @@ public class ProductService {
     }
 
     public void deleteProduct(Long id) throws ProductNotFoundException {
-        Product existingProduct = productRepository.findById(id).orElseThrow(()-> new ProductNotFoundException("Product with id:" + id + " is not present") );
+        Product existingProduct = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product with id:" + id + " is not present"));
         productRepository.delete(existingProduct);
     }
 }

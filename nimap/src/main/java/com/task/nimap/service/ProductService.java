@@ -8,6 +8,7 @@ import com.task.nimap.entity.Category;
 import com.task.nimap.entity.Product;
 import com.task.nimap.service.exception.CategoryNotFoundException;
 import com.task.nimap.service.exception.ProductAlreadyExistsException;
+import com.task.nimap.service.exception.ProductNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,5 +31,10 @@ public class ProductService {
         Product product = new Product(requestDto.getName(), requestDto.getDescription(), requestDto.getPrice(), category);
         Product savedProduct = productRepository.save(product);
         return new ProductResponseDto(savedProduct.getId(), savedProduct.getName(), savedProduct.getDescription(), savedProduct.getPrice(), savedProduct.getCategory().getId());
+    }
+
+    public ProductResponseDto findProductById(Long id) throws ProductNotFoundException {
+        Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product with id:" + id + " is not present"));
+        return new ProductResponseDto(product.getId(),product.getName(),product.getDescription(),product.getPrice(),product.getCategory().getId());
     }
 }

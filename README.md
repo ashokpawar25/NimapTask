@@ -58,7 +58,7 @@ The `CategoryController` class is a REST controller responsible for handling HTT
 
 ### Endpoints
 
-- **GET /api/categories**: Retrieves all categories with optional pagination.
+- **GET /api/categories?page=?**: Retrieves all categories with optional pagination.
 - **POST /api/categories**: Creates a new category.
 - **GET /api/categories/{id}**: Retrieves a category by its ID.
 - **PUT /api/categories/{id}**: Updates the name of a category by its ID.
@@ -71,7 +71,7 @@ The `ProductController` class is a REST controller responsible for handling HTTP
 
 ### Endpoints
 
-- **GET /api/products**: Retrieves all products with optional pagination.
+- **GET /api/products?page=?**: Retrieves all products with optional pagination.
 - **POST /api/products**: Creates a new product.
 - **GET /api/products/{id}**: Retrieves a product by its ID.
 - **PUT /api/products/{id}**: Updates a product by its ID.
